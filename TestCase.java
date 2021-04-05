@@ -105,11 +105,10 @@ public class TestCase {
 		// Order Total before apply coupon
 		String orderTotal = driver.findElement(By.xpath("//span[text() = 'Order Total']//following::span[1]")).getText();
 		String ot = orderTotal.replaceAll("[^\\d]", "");
-
-	    new BigDecimal(ot).stripTrailingZeros().toPlainString();
-	    
+		ot = ot.substring(0, ot.length()-2);
 		//Double OrderPrice = Double.parseDouble(ot);
 		Integer intOrPr = Integer.parseInt(ot);	
+		
 		System.out.println("Order total before applying discount:  "+intOrPr);
 		
 		Thread.sleep(4000);
@@ -124,7 +123,14 @@ public class TestCase {
 		System.out.println("Customer Care Details: "+voucherTxt);
 		
 			//12(a) Verify the bill amount is matching with the discount price or not 
-		if (intDisPrice == intOrPr ) {
+		String rs = driver.findElement(By.xpath("//span[@class='price-value bold-font']")).getText().replaceAll("[^\\d]", "");
+		rs = rs.substring(0, rs.length()-2);		
+		Integer finalPrice = Integer.parseInt(rs);		
+		System.out.println("Final Price:  "+finalPrice);
+		
+		
+		
+		if (intDisPrice == finalPrice ) {
 			System.out.println(" Correct Discount Applied");
 		} else {
 			System.out.println(" Bill total does not match discount price");
@@ -136,7 +142,7 @@ public class TestCase {
 		driver.findElement(By.xpath("//div[@class= 'card-delete-button']/div[@class= 'delete-btn']")).click();
 				
 		//14) Close all the browsers
-		driver.quit();
+		//driver.quit();
 		
 		
 		
