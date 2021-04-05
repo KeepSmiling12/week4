@@ -50,7 +50,7 @@ public class TestCase {
 		driver.findElement(By.id("maxPrice")).sendKeys("5000");
 		driver.findElement(By.xpath("(//button[@type='submit'])[2]")).click();
 		
-		//5) Click on the first product 
+		//5) Click on the first product driver.findElement(By.xpath("//div[@class='contentHolder']//div")).click();
 		driver.findElement(By.xpath("//img[contains(@class,'rilrtl-lazy-img ')]")).click();
 		Thread.sleep(2000);
 		Set<String>allWindws =  driver.getWindowHandles();
@@ -60,7 +60,9 @@ public class TestCase {
 		List<String> lstWindw =  new ArrayList<String>(allWindws);
 		String secWindow = lstWindw.get(1);
 		driver.switchTo().window(secWindow);
-		String price = driver.findElement(By.xpath("//div[text()='Rs. 3,779']")).getText();
+		//String price = driver.findElement(By.xpath("//div[text()='Rs. 3,779']")).getText();
+		String price = driver.findElement(By.xpath("//div[@class='prod-price-section ']//div[1]")).getText();
+		//String price = driver.findElement(By.xpath("//div[class='prod-sp']")).getText();
 		System.out.println("Actual Price:  "+price);
 		
 		//6) Get the actual price, coupon code and discount price
@@ -142,7 +144,7 @@ public class TestCase {
 		driver.findElement(By.xpath("//div[@class= 'card-delete-button']/div[@class= 'delete-btn']")).click();
 				
 		//14) Close all the browsers
-		//driver.quit();
+		driver.quit();
 		
 		
 		
