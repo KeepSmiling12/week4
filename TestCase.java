@@ -1,8 +1,6 @@
 package week4.day2;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.time.Duration;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +35,7 @@ public class TestCase {
 		srchBags.sendKeys("Bags");
 		srchBags.sendKeys(Keys.RETURN);
 		driver.findElement(By.xpath("(//label[contains(@class,'facet-linkname facet-linkname-genderfilter')])[3]")).click();
-		driver.findElement(By.xpath("//label[contains(@class,'facet-linkname facet-linkname-l1l3nestedcategory')]")).click();
+		driver.findElement(By.xpath("//label[@for='Women - Handbags']")).click();
 		driver.findElement(By.className("five-grid")).click();
 		
 		//3) Click on five grid and Select SORT BY as "What's New"
@@ -45,7 +43,7 @@ public class TestCase {
 		new Select(sortByRele).selectByVisibleText("What's New"); 
 		
 		//4) Click Price on the side menu and Enter Price Range Min as 2000 and Max as 5000
-		driver.findElement(By.xpath("(//span[@class='facet-left-pane-label'])[3]")).click();
+		driver.findElement(By.xpath("//span[text()='price']")).click();
 		driver.findElement(By.id("minPrice")).sendKeys("3000");
 		driver.findElement(By.id("maxPrice")).sendKeys("5000");
 		driver.findElement(By.xpath("(//button[@type='submit'])[2]")).click();
@@ -73,7 +71,8 @@ public class TestCase {
 		System.out.println(cuCode);
 		
 		String disPrice = driver.findElement(By.xpath("//div[@class = 'promo-desc-block']/div/span")).getText();
-		String disPrc = disPrice.replaceAll("[^\\d]", "");
+		String disPrc = disPrice.replaceAll("[^\\d.]", "");
+		disPrc = disPrc.substring(1, disPrc.length());	
 		float intDisPrice = Float.parseFloat(disPrc);
 		System.out.println("Discount Price displayed:  "+intDisPrice);
 		
@@ -103,13 +102,15 @@ public class TestCase {
 		driver.findElement(By.xpath("//span[text() = 'GO TO BAG']")).click();
 		
 		// get amount of saving price from cart
-		String s1 = driver.findElement(By.xpath("//span[@class='amount-savings']")).getText().replaceAll("[^\\d]", "");
-		int discount = Integer.parseInt(s1);
+		String s1 = driver.findElement(By.xpath("//span[@class='amount-savings']")).getText().replaceAll("[^\\d.]", "");
+		s1 = s1.substring(1, s1.length());
+		float discount = Float.parseFloat(s1);
 		System.out.println("Discount with code:  "+discount);
 		
 		// Order Total before apply coupon
 		String orderTotal = driver.findElement(By.xpath("//span[text() = 'Order Total']//following::span[1]")).getText();
-		String ot = orderTotal.replaceAll("[^\\d]", "");
+		String ot = orderTotal.replaceAll("[^\\d.]", "");
+		ot = ot.substring(1, ot.length());	
 		float ordTtal = Float.parseFloat(ot);
 		System.out.println("Order total before applying discount:  "+ordTtal);
 		
@@ -124,8 +125,11 @@ public class TestCase {
 		System.out.println("Customer Care Details: "+voucherTxt);
 	
 			//12(a) Verify the bill amount is matching with the discount price or not 
-		String s = driver.findElement(By.xpath("//span[@class='price-value bold-font']")).getText().replaceAll("[^\\d]", "");		
-		int finalPrice = Integer.parseInt(s);
+		String s = driver.findElement(By.xpath("//span[@class='price-value bold-font']")).getText().replaceAll("[^\\d.]", "");
+		s = s.substring(1, s.length());	
+		float finalPrice = Float.parseFloat(s);
+		//int finalPrice = Integer.parseInt(s);
+		//float finalPrice = Float.parseFloat(s);
 		System.out.println("Final Price:  "+finalPrice);
 		
 		float v = ordTtal - discount;
@@ -143,26 +147,6 @@ public class TestCase {
 				
 		//14) Close all the browsers
 		driver.quit();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 
